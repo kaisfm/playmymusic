@@ -27,8 +27,8 @@
 
 namespace PlayMyMusic {
     public class MainWindow : Gtk.Window {
-        PlayMyMusic.Services.LibraryManager library_manager;
-        PlayMyMusic.Settings settings;
+        Services.LibraryManager library_manager;
+        Settings settings;
 
         public signal void ctrl_press ();
         public signal void ctrl_release ();
@@ -88,7 +88,7 @@ namespace PlayMyMusic {
         };
 
         construct {
-            settings = PlayMyMusic.Settings.get_default ();
+            settings = Settings.get_default ();
             settings.notify["use-dark-theme"].connect (() => {
                 Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = settings.use_dark_theme;
             });
@@ -101,7 +101,7 @@ namespace PlayMyMusic {
             settings.notify["sort-mode-album-view"].connect (() => {
                 set_sort_mode_album_view ();
             });
-            library_manager = PlayMyMusic.Services.LibraryManager.instance;
+            library_manager = Services.LibraryManager.instance;
             library_manager.sync_started.connect (() => {
                 Idle.add (() => {
                     headerbar.pack_end (spinner);
@@ -567,7 +567,7 @@ namespace PlayMyMusic {
                 library_manager.sync_library_content.begin ();
             });
 
-            var menu_sort = new Gtk.MenuItem.with_label (_("Sorting"));
+            var menu_sort = new Gtk.MenuItem.with_label (_("Sort by"));
             var menu_sort_sub = new Gtk.Menu ();
             menu_sort.set_submenu (menu_sort_sub);
             menu_sort_1 = new Gtk.CheckMenuItem.with_label (_("Artist - Year - Album"));
@@ -682,7 +682,8 @@ namespace PlayMyMusic {
                 }
             });
             queue.moved_to_playlist.connect (() => {
-                show_playlists ();
+                // CHOOSE PLAYLIST VIEW
+                view_mode.selected = 3;
             });
             queue_popover.add (queue);
 
@@ -844,7 +845,9 @@ namespace PlayMyMusic {
                 }
             }
             tracks_view.init_end ();
-            albums_view.do_sort (true);
+            if (settings.sort_mode_album_view != 1) {
+                albums_view.do_sort (true);
+            }
         }
 
         private void reset_all_views () {
