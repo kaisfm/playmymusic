@@ -100,6 +100,13 @@ namespace PlayMyMusic.Widgets.Views {
             });
             action_toolbar.pack_start (add_button);
 
+            var import_button = new Gtk.Button.from_icon_name ("document-import-symbolic");
+            import_button.tooltip_text = _("Import Playlist");
+            import_button.clicked.connect (() => {
+                library_manager.import_playlist ();
+            });
+            action_toolbar.pack_start (import_button);
+
             new_playlist_popover = new Gtk.Popover (null);
 
             var new_playlist = new Gtk.Grid ();
@@ -131,11 +138,15 @@ namespace PlayMyMusic.Widgets.Views {
 
             var welcome = new Granite.Widgets.Welcome (_ ("No Playlists"), _ ("Add playlist to your library."));
             welcome.append ("document-new", _ ("Create Playlist"), _ ("Create a playlist for manage your favorite songs."));
+            welcome.append ("document-import", _("Import Playlist"), _("Import .m3u formated Playlist."));
             welcome.activated.connect ((index) => {
                 switch (index) {
-                    case 0 :
+                    case 0:
                         new_playlist_popover.set_relative_to (welcome.get_button_from_index (index));
                         new_playlist_popover.show_all ();
+                        break;
+                    case 1:
+                        library_manager.import_playlist ();
                         break;
                 }
             });

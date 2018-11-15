@@ -55,11 +55,16 @@
       <description>
         <p>New:</p>
         <ul>
-          <li>Export Playlist as M3U</li>
+          <li>[Playlist] Export/Import Playlist as M3U format</li>
+          <li>[Playlist] Show track counter and playlist duration</li>
         </ul>
         <p>Improved:</p>
         <ul>
           <li>Select playlist button when copy queue into a new playlist</li>
+        </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>[Radio] UI fix 'new Radio' popup</li>
         </ul>
         <p>Translation:</p>
         <ul>
